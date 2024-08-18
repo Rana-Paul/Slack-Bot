@@ -20,8 +20,10 @@ const MessageComponent: FC<Custombutton> = ({}) => {
 
   const handleClick = async () => {
     setLoading(true);
+    //parse the message with zod
     const result = messageSchema.safeParse(message);
 
+    //check if the result is valid
     if (!result.success) {
       setLoading(false);
       setError(result.error.errors[0].message);
@@ -29,6 +31,7 @@ const MessageComponent: FC<Custombutton> = ({}) => {
       return;
     }
 
+    // send the message
     try {
       const res = await axios.post("/api/slack", { message });
       toast.success("Message sent successfully!");
@@ -57,6 +60,7 @@ const MessageComponent: FC<Custombutton> = ({}) => {
         } rounded bg-slate-900`}
       />
       
+      {/* Send button */}
       <button
         onClick={handleClick}
         className="p-2 w-[20%] flex justify-center bg-blue-500 text-white rounded"
@@ -67,6 +71,7 @@ const MessageComponent: FC<Custombutton> = ({}) => {
           "Send Message"
         )}
       </button>
+      {/* Error Message */}
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
